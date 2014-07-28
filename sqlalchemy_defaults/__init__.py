@@ -4,7 +4,7 @@ import six
 import sqlalchemy as sa
 
 
-__version__ = '0.4.1'
+__version__ = '0.4.2'
 
 
 class Column(sa.Column):
@@ -106,7 +106,8 @@ class ModelConfigurator(object):
         """
         Assigns int column server_default based on column default value
         """
-        if column.default is not None:
+        if (column.default is not None and
+                isinstance(column.default, sa.schema.ColumnDefault)):
             if (isinstance(column.default.arg, six.text_type) or
                     isinstance(column.default.arg, six.integer_types)):
                 column.server_default = sa.schema.DefaultClause(
